@@ -82,7 +82,7 @@ DROP TABLE IF EXISTS `celebs_profiles`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `celebs_profiles` (
   `celeb_id` int unsigned NOT NULL AUTO_INCREMENT,
-  `sex` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sex` enum('M','F') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `birthday` date NOT NULL,
   `city_id` int unsigned DEFAULT NULL,
   `country_id` int unsigned DEFAULT NULL,
@@ -198,15 +198,14 @@ DROP TABLE IF EXISTS `films`;
 CREATE TABLE `films` (
   `id` int unsigned NOT NULL,
   `title` varchar(50) DEFAULT NULL,
-  `genre_id` int unsigned DEFAULT NULL,
+  `genres` int unsigned DEFAULT NULL,
   `years` date DEFAULT NULL,
-  `rating` int DEFAULT NULL,
   `is_in_cinema` varchar(10) DEFAULT NULL,
   `price` decimal(10,2) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `films_years_film_idx` (`years`,`title`),
-  KEY `films_genres_film_idx` (`genre_id`,`title`),
-  CONSTRAINT `films_genre_id_fk` FOREIGN KEY (`genre_id`) REFERENCES `genres` (`id`)
+  KEY `films_genres_film_idx` (`genres`,`title`),
+  CONSTRAINT `films_genre_id_fk` FOREIGN KEY (`genres`) REFERENCES `multi_genre_films_serials` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -216,7 +215,7 @@ CREATE TABLE `films` (
 
 LOCK TABLES `films` WRITE;
 /*!40000 ALTER TABLE `films` DISABLE KEYS */;
-INSERT INTO `films` VALUES (1,'Est non quibusdam soluta et quia.',3,'2004-10-07',8,'yes',457.00),(2,'Provident autem perferendis odit ut quo.',7,'1992-05-29',275,'no',0.00),(3,'Aut quo vitae velit.',2,'1992-09-24',350,'no',0.00),(4,'Est quis similique accusantium ea delectus eveniet',2,'2001-01-14',924,'yes',433.00),(5,'Non voluptate explicabo vel sint asperiores.',3,'2019-03-03',570,'no',0.00),(6,'Voluptatem harum fugit nostrum vitae dolores eos.',8,'2019-05-17',78,'no',0.00),(7,'Earum saepe voluptatem eligendi necessitatibus in ',3,'1993-11-12',678,'yes',444.00),(8,'Ducimus repudiandae aliquam sunt animi.',6,'2000-05-14',154,'yes',575.00),(9,'Doloremque quo reprehenderit deserunt amet in sit.',7,'1976-05-11',739,'yes',1191.00),(10,'Laudantium dolor autem quae nesciunt.',2,'2019-11-14',231,'yes',1480.00),(11,'Ducimus aliquid labore laborum.',4,'1972-12-10',936,'yes',1080.00),(12,'Nisi ab nulla velit saepe voluptates eaque.',10,'1980-01-11',986,'yes',609.00),(13,'Reprehenderit repellat ex minima maiores ducimus e',2,'1989-04-22',122,'yes',654.00),(14,'Vitae quos pariatur ab et fuga odio omnis.',4,'1994-08-20',651,'yes',1095.00),(15,'Qui placeat quo eos neque.',1,'1994-05-20',887,'no',0.00),(16,'Eligendi ea eveniet et eveniet explicabo ea aut.',5,'2002-04-14',484,'no',0.00),(17,'Non id rerum ut laudantium ut id iure aut.',10,'1996-04-22',756,'yes',763.00),(18,'Nihil impedit harum reiciendis ut.',9,'1996-07-11',330,'no',0.00),(19,'Debitis debitis qui quis deleniti incidunt.',13,'1990-04-30',379,'no',0.00),(20,'Et consequatur voluptatibus voluptate tenetur beat',12,'1972-10-28',905,'yes',1382.00),(21,'Sit in laboriosam ut at consequatur earum dolores.',5,'1978-04-03',388,'yes',671.00),(22,'Ipsa sit asperiores et exercitationem cupiditate s',5,'1996-01-30',225,'yes',1260.00),(23,'Molestiae aut quasi totam consequatur.',7,'1991-10-30',960,'yes',1538.00),(24,'Debitis aliquid explicabo aliquam eius omnis.',6,'1994-10-31',124,'yes',1161.00),(25,'Libero in nam ut aliquid.',11,'1996-03-22',742,'yes',840.00),(26,'Quia qui totam sequi omnis voluptas qui nulla itaq',9,'1973-12-18',334,'yes',368.00),(27,'Voluptas aut sint consequatur dicta.',12,'2006-05-25',447,'yes',1371.00),(28,'Laboriosam beatae est ullam accusamus et dolor asp',4,'2009-12-20',231,'no',0.00),(29,'Ea quia debitis voluptate tempore omnis dignissimo',12,'1993-05-31',813,'yes',599.00),(30,'Asperiores et sint reprehenderit molestias ratione',10,'1974-10-02',373,'yes',934.00),(31,'Veniam nobis qui at adipisci.',11,'2006-03-12',423,'no',0.00),(32,'Et eligendi enim ea aspernatur quasi atque volupta',13,'1970-12-13',996,'no',0.00),(33,'Ea provident cupiditate rem pariatur voluptate ea.',4,'1993-01-10',712,'yes',1324.00),(34,'Quis sit occaecati reiciendis quaerat perspiciatis',9,'1979-12-06',570,'yes',1069.00),(35,'Ut odit enim illum cumque.',4,'1981-07-18',712,'yes',1024.00),(36,'Omnis nemo et aut aut officiis.',5,'1973-05-09',852,'yes',364.00),(37,'Deleniti tempora qui modi quasi repellat ut.',12,'1993-03-05',123,'yes',799.00),(38,'Ad omnis tenetur accusantium omnis vitae ut hic.',5,'1981-05-02',57,'no',0.00),(39,'Quisquam et voluptates labore vero beatae incidunt',5,'2004-03-02',917,'no',0.00),(40,'Quo maiores quia rerum vel optio nostrum.',6,'1984-05-10',413,'no',0.00),(41,'Vero aperiam mollitia doloremque alias modi volupt',2,'1989-04-24',313,'no',0.00),(42,'Aut dolores alias asperiores.',6,'2014-12-19',326,'yes',1353.00),(43,'Et molestias officia reiciendis molestias similiqu',9,'2014-12-28',689,'yes',420.00),(44,'Quo alias molestiae velit aut ex earum voluptatem.',3,'2017-07-27',466,'no',0.00),(45,'Facilis blanditiis dolores suscipit est reprehende',10,'1987-02-03',264,'yes',1289.00),(46,'Facere consequatur sint quo sint.',4,'1980-03-02',922,'no',0.00),(47,'Blanditiis eius fugit et aspernatur et nihil.',1,'1992-11-28',819,'yes',1237.00),(48,'Non sit provident aspernatur modi provident.',6,'2004-07-21',326,'yes',768.00),(49,'Error rem mollitia aut iusto debitis.',2,'2004-08-05',173,'yes',980.00),(50,'Nesciunt a esse fuga officia velit earum eum velit',5,'1989-09-17',885,'yes',1046.00),(51,'Placeat a quis aspernatur et consequatur rerum.',4,'1985-03-09',907,'no',0.00),(52,'Unde qui occaecati quia provident voluptatum et.',5,'2007-10-17',877,'yes',739.00),(53,'Quo enim dolores quis excepturi odio laboriosam.',12,'1985-10-01',667,'no',0.00),(54,'Quam commodi exercitationem voluptatibus magnam de',7,'2007-11-09',702,'no',0.00),(55,'Incidunt earum in aut voluptates sit.',13,'1980-10-15',510,'no',0.00),(56,'Reprehenderit omnis earum impedit repellat at veli',1,'1974-04-01',444,'yes',1410.00),(57,'Esse debitis quia aut animi aut.',5,'1993-05-30',687,'no',0.00),(58,'Animi exercitationem quis nesciunt.',10,'2009-08-28',102,'yes',884.00),(59,'Ducimus ipsum deleniti reiciendis dolores quis adi',9,'1999-09-16',450,'yes',1039.00),(60,'Voluptatum et non dignissimos illum ut.',2,'1975-03-28',943,'no',0.00),(61,'Aliquam voluptas quis numquam laudantium aut et au',8,'1992-08-24',363,'yes',994.00),(62,'Ullam et doloribus similique eum facere ea.',8,'1986-10-24',985,'yes',1505.00),(63,'Sed nesciunt nam iusto nam.',4,'1986-01-13',836,'yes',594.00),(64,'Excepturi sit rem veniam corporis.',7,'1971-03-11',225,'no',0.00),(65,'Est et eos et voluptatibus asperiores distinctio e',9,'1970-07-13',617,'yes',506.00),(66,'Perferendis amet rem dolor enim.',12,'1981-10-12',410,'no',0.00),(67,'Sed voluptas sed omnis earum laudantium iste eum.',8,'2012-09-09',199,'no',0.00),(68,'Hic natus pariatur cupiditate fuga soluta voluptas',13,'2012-08-08',763,'no',0.00),(69,'Modi temporibus et pariatur nihil ut.',4,'1983-01-30',218,'no',0.00),(70,'In illo nemo porro.',4,'2017-11-03',802,'no',0.00),(71,'Sequi consequatur dolores aliquam tempora voluptat',8,'2021-02-16',355,'no',0.00),(72,'Facilis ut quia dolor et.',13,'2020-05-02',370,'no',0.00),(73,'Est aut sapiente hic tenetur aperiam quasi maiores',4,'1978-06-17',783,'no',0.00),(74,'Sit ad consequatur eius maiores aliquid quis paria',4,'1994-02-23',806,'no',0.00),(75,'Eum nihil perspiciatis ea ut quis pariatur aut.',10,'1977-01-15',681,'no',0.00),(76,'Eius maxime maxime officiis.',12,'2007-04-19',985,'no',0.00),(77,'Quia similique culpa quod non quos rerum laboriosa',2,'1987-05-12',880,'no',0.00),(78,'Eaque vel nemo dolor hic reiciendis id eaque.',11,'1980-03-17',445,'yes',398.00),(79,'Quibusdam maiores quos voluptatem.',12,'1984-04-09',586,'yes',1324.00),(80,'Doloremque excepturi velit vero qui iure dolor rer',1,'2009-01-03',593,'yes',1476.00),(81,'Ut assumenda deleniti alias.',7,'1984-08-13',207,'no',0.00),(82,'Earum velit itaque ut at ut labore.',7,'1994-03-19',254,'yes',656.00),(83,'Nam ullam facere officia molestiae reprehenderit.',10,'1971-04-01',649,'no',0.00),(84,'Reiciendis dolorum est corporis consequuntur nostr',5,'1977-05-16',484,'no',0.00),(85,'Nihil assumenda perspiciatis ut doloremque quaerat',5,'2013-03-12',470,'yes',905.00),(86,'Numquam recusandae officia quos cum voluptatem.',13,'1981-07-12',899,'yes',1005.00),(87,'Illo reiciendis esse non ut omnis sequi.',8,'2007-01-18',86,'no',0.00),(88,'Voluptatibus earum maxime repellendus adipisci min',2,'1976-10-07',732,'no',0.00),(89,'Non harum hic illo sed.',12,'1994-03-26',403,'no',0.00),(90,'Quo et qui dolorum commodi quisquam voluptas.',2,'1975-08-01',816,'no',0.00),(91,'Adipisci iste molestias et ea non nihil dicta.',13,'1972-10-19',872,'yes',760.00),(92,'Id nobis qui voluptas maxime delectus et eos dolor',5,'1991-09-12',911,'no',0.00),(93,'Non ipsa debitis harum quia dolorum enim soluta et',11,'1979-07-30',938,'no',0.00),(94,'Dolorem voluptatibus labore tempore rerum suscipit',13,'2005-06-30',956,'no',0.00),(95,'Dicta quas vel mollitia est.',7,'1972-01-16',967,'yes',439.00),(96,'Et pariatur est rerum rerum ut consequatur.',8,'2018-01-12',966,'no',0.00),(97,'Cumque odit tempore quia aut commodi delectus cons',8,'1982-06-21',928,'yes',762.00),(98,'Ut maxime quas aliquid culpa.',12,'1975-09-06',743,'no',0.00),(99,'Dolor non animi eveniet fuga.',11,'1972-09-22',930,'no',0.00),(100,'Aut quia ad nulla distinctio nihil illo corrupti.',6,'2009-08-03',421,'no',0.00);
+INSERT INTO `films` VALUES (1,'Est non quibusdam soluta et quia.',60,'2004-10-07','yes',457.00),(2,'Provident autem perferendis odit ut quo.',7,'1992-05-29','no',0.00),(3,'Aut quo vitae velit.',57,'1992-09-24','no',0.00),(4,'Est quis similique accusantium ea delectus eveniet',60,'2001-01-14','yes',433.00),(5,'Non voluptate explicabo vel sint asperiores.',30,'2019-03-03','no',0.00),(6,'Voluptatem harum fugit nostrum vitae dolores eos.',69,'2019-05-17','no',0.00),(7,'Earum saepe voluptatem eligendi necessitatibus in ',54,'1993-11-12','yes',444.00),(8,'Ducimus repudiandae aliquam sunt animi.',62,'2000-05-14','yes',575.00),(9,'Doloremque quo reprehenderit deserunt amet in sit.',47,'1976-05-11','yes',1191.00),(10,'Laudantium dolor autem quae nesciunt.',51,'2019-11-14','yes',1480.00),(11,'Ducimus aliquid labore laborum.',13,'1972-12-10','yes',1080.00),(12,'Nisi ab nulla velit saepe voluptates eaque.',10,'1980-01-11','yes',609.00),(13,'Reprehenderit repellat ex minima maiores ducimus e',11,'1989-04-22','yes',654.00),(14,'Vitae quos pariatur ab et fuga odio omnis.',26,'1994-08-20','yes',1095.00),(15,'Qui placeat quo eos neque.',98,'1994-05-20','no',0.00),(16,'Eligendi ea eveniet et eveniet explicabo ea aut.',9,'2002-04-14','no',0.00),(17,'Non id rerum ut laudantium ut id iure aut.',49,'1996-04-22','yes',763.00),(18,'Nihil impedit harum reiciendis ut.',20,'1996-07-11','no',0.00),(19,'Debitis debitis qui quis deleniti incidunt.',50,'1990-04-30','no',0.00),(20,'Et consequatur voluptatibus voluptate tenetur beat',89,'1972-10-28','yes',1382.00),(21,'Sit in laboriosam ut at consequatur earum dolores.',98,'1978-04-03','yes',671.00),(22,'Ipsa sit asperiores et exercitationem cupiditate s',20,'1996-01-30','yes',1260.00),(23,'Molestiae aut quasi totam consequatur.',6,'1991-10-30','yes',1538.00),(24,'Debitis aliquid explicabo aliquam eius omnis.',70,'1994-10-31','yes',1161.00),(25,'Libero in nam ut aliquid.',29,'1996-03-22','yes',840.00),(26,'Quia qui totam sequi omnis voluptas qui nulla itaq',37,'1973-12-18','yes',368.00),(27,'Voluptas aut sint consequatur dicta.',97,'2006-05-25','yes',1371.00),(28,'Laboriosam beatae est ullam accusamus et dolor asp',71,'2009-12-20','no',0.00),(29,'Ea quia debitis voluptate tempore omnis dignissimo',67,'1993-05-31','yes',599.00),(30,'Asperiores et sint reprehenderit molestias ratione',18,'1974-10-02','yes',934.00),(31,'Veniam nobis qui at adipisci.',92,'2006-03-12','no',0.00),(32,'Et eligendi enim ea aspernatur quasi atque volupta',4,'1970-12-13','no',0.00),(33,'Ea provident cupiditate rem pariatur voluptate ea.',43,'1993-01-10','yes',1324.00),(34,'Quis sit occaecati reiciendis quaerat perspiciatis',2,'1979-12-06','yes',1069.00),(35,'Ut odit enim illum cumque.',83,'1981-07-18','yes',1024.00),(36,'Omnis nemo et aut aut officiis.',7,'1973-05-09','yes',364.00),(37,'Deleniti tempora qui modi quasi repellat ut.',86,'1993-03-05','yes',799.00),(38,'Ad omnis tenetur accusantium omnis vitae ut hic.',9,'1981-05-02','no',0.00),(39,'Quisquam et voluptates labore vero beatae incidunt',88,'2004-03-02','no',0.00),(40,'Quo maiores quia rerum vel optio nostrum.',10,'1984-05-10','no',0.00),(41,'Vero aperiam mollitia doloremque alias modi volupt',88,'1989-04-24','no',0.00),(42,'Aut dolores alias asperiores.',10,'2014-12-19','yes',1353.00),(43,'Et molestias officia reiciendis molestias similiqu',83,'2014-12-28','yes',420.00),(44,'Quo alias molestiae velit aut ex earum voluptatem.',87,'2017-07-27','no',0.00),(45,'Facilis blanditiis dolores suscipit est reprehende',85,'1987-02-03','yes',1289.00),(46,'Facere consequatur sint quo sint.',61,'1980-03-02','no',0.00),(47,'Blanditiis eius fugit et aspernatur et nihil.',51,'1992-11-28','yes',1237.00),(48,'Non sit provident aspernatur modi provident.',72,'2004-07-21','yes',768.00),(49,'Error rem mollitia aut iusto debitis.',4,'2004-08-05','yes',980.00),(50,'Nesciunt a esse fuga officia velit earum eum velit',7,'1989-09-17','yes',1046.00),(51,'Placeat a quis aspernatur et consequatur rerum.',19,'1985-03-09','no',0.00),(52,'Unde qui occaecati quia provident voluptatum et.',75,'2007-10-17','yes',739.00),(53,'Quo enim dolores quis excepturi odio laboriosam.',18,'1985-10-01','no',0.00),(54,'Quam commodi exercitationem voluptatibus magnam de',63,'2007-11-09','no',0.00),(55,'Incidunt earum in aut voluptates sit.',63,'1980-10-15','no',0.00),(56,'Reprehenderit omnis earum impedit repellat at veli',22,'1974-04-01','yes',1410.00),(57,'Esse debitis quia aut animi aut.',24,'1993-05-30','no',0.00),(58,'Animi exercitationem quis nesciunt.',52,'2009-08-28','yes',884.00),(59,'Ducimus ipsum deleniti reiciendis dolores quis adi',89,'1999-09-16','yes',1039.00),(60,'Voluptatum et non dignissimos illum ut.',89,'1975-03-28','no',0.00),(61,'Aliquam voluptas quis numquam laudantium aut et au',76,'1992-08-24','yes',994.00),(62,'Ullam et doloribus similique eum facere ea.',13,'1986-10-24','yes',1505.00),(63,'Sed nesciunt nam iusto nam.',36,'1986-01-13','yes',594.00),(64,'Excepturi sit rem veniam corporis.',42,'1971-03-11','no',0.00),(65,'Est et eos et voluptatibus asperiores distinctio e',2,'1970-07-13','yes',506.00),(66,'Perferendis amet rem dolor enim.',84,'1981-10-12','no',0.00),(67,'Sed voluptas sed omnis earum laudantium iste eum.',11,'2012-09-09','no',0.00),(68,'Hic natus pariatur cupiditate fuga soluta voluptas',3,'2012-08-08','no',0.00),(69,'Modi temporibus et pariatur nihil ut.',83,'1983-01-30','no',0.00),(70,'In illo nemo porro.',5,'2017-11-03','no',0.00),(71,'Sequi consequatur dolores aliquam tempora voluptat',77,'2021-02-16','no',0.00),(72,'Facilis ut quia dolor et.',67,'2020-05-02','no',0.00),(73,'Est aut sapiente hic tenetur aperiam quasi maiores',3,'1978-06-17','no',0.00),(74,'Sit ad consequatur eius maiores aliquid quis paria',15,'1994-02-23','no',0.00),(75,'Eum nihil perspiciatis ea ut quis pariatur aut.',66,'1977-01-15','no',0.00),(76,'Eius maxime maxime officiis.',85,'2007-04-19','no',0.00),(77,'Quia similique culpa quod non quos rerum laboriosa',27,'1987-05-12','no',0.00),(78,'Eaque vel nemo dolor hic reiciendis id eaque.',77,'1980-03-17','yes',398.00),(79,'Quibusdam maiores quos voluptatem.',6,'1984-04-09','yes',1324.00),(80,'Doloremque excepturi velit vero qui iure dolor rer',99,'2009-01-03','yes',1476.00),(81,'Ut assumenda deleniti alias.',77,'1984-08-13','no',0.00),(82,'Earum velit itaque ut at ut labore.',86,'1994-03-19','yes',656.00),(83,'Nam ullam facere officia molestiae reprehenderit.',97,'1971-04-01','no',0.00),(84,'Reiciendis dolorum est corporis consequuntur nostr',28,'1977-05-16','no',0.00),(85,'Nihil assumenda perspiciatis ut doloremque quaerat',48,'2013-03-12','yes',905.00),(86,'Numquam recusandae officia quos cum voluptatem.',56,'1981-07-12','yes',1005.00),(87,'Illo reiciendis esse non ut omnis sequi.',37,'2007-01-18','no',0.00),(88,'Voluptatibus earum maxime repellendus adipisci min',16,'1976-10-07','no',0.00),(89,'Non harum hic illo sed.',68,'1994-03-26','no',0.00),(90,'Quo et qui dolorum commodi quisquam voluptas.',93,'1975-08-01','no',0.00),(91,'Adipisci iste molestias et ea non nihil dicta.',57,'1972-10-19','yes',760.00),(92,'Id nobis qui voluptas maxime delectus et eos dolor',9,'1991-09-12','no',0.00),(93,'Non ipsa debitis harum quia dolorum enim soluta et',74,'1979-07-30','no',0.00),(94,'Dolorem voluptatibus labore tempore rerum suscipit',39,'2005-06-30','no',0.00),(95,'Dicta quas vel mollitia est.',75,'1972-01-16','yes',439.00),(96,'Et pariatur est rerum rerum ut consequatur.',56,'2018-01-12','no',0.00),(97,'Cumque odit tempore quia aut commodi delectus cons',53,'1982-06-21','yes',762.00),(98,'Ut maxime quas aliquid culpa.',100,'1975-09-06','no',0.00),(99,'Dolor non animi eveniet fuga.',38,'1972-09-22','no',0.00),(100,'Aut quia ad nulla distinctio nihil illo corrupti.',92,'2009-08-03','no',0.00);
 /*!40000 ALTER TABLE `films` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -309,6 +308,38 @@ INSERT INTO `messages` VALUES (1,51,6,'Atque eaque eum ut eum est voluptatem asp
 UNLOCK TABLES;
 
 --
+-- Table structure for table `multi_genre_films_serials`
+--
+
+DROP TABLE IF EXISTS `multi_genre_films_serials`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `multi_genre_films_serials` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `genre_id` int unsigned NOT NULL COMMENT 'Ссылка на ',
+  `film_id` int unsigned DEFAULT NULL,
+  `serial_id` int unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `multi_genre_films_serials_genre_id_fk` (`genre_id`),
+  KEY `multi_genre_films_serials_f_fk` (`film_id`),
+  KEY `multi_genre_films_serials_s_fk` (`serial_id`),
+  CONSTRAINT `multi_genre_films_serials_f_fk` FOREIGN KEY (`film_id`) REFERENCES `films` (`id`),
+  CONSTRAINT `multi_genre_films_serials_genre_id_fk` FOREIGN KEY (`genre_id`) REFERENCES `genres` (`id`),
+  CONSTRAINT `multi_genre_films_serials_s_fk` FOREIGN KEY (`serial_id`) REFERENCES `serials` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `multi_genre_films_serials`
+--
+
+LOCK TABLES `multi_genre_films_serials` WRITE;
+/*!40000 ALTER TABLE `multi_genre_films_serials` DISABLE KEYS */;
+INSERT INTO `multi_genre_films_serials` VALUES (1,11,36,36),(2,10,62,86),(3,6,61,72),(4,11,76,43),(5,12,9,79),(6,10,12,49),(7,2,99,65),(8,4,48,54),(9,4,63,41),(10,2,45,83),(11,11,59,46),(12,8,41,37),(13,9,1,15),(14,10,11,41),(15,10,44,96),(16,7,56,34),(17,1,6,22),(18,12,95,100),(19,2,56,48),(20,10,8,26),(21,1,58,67),(22,8,94,95),(23,12,67,65),(24,4,23,42),(25,6,74,49),(26,4,74,97),(27,8,8,61),(28,11,26,82),(29,5,17,87),(30,11,45,81),(31,9,2,1),(32,13,95,77),(33,13,63,16),(34,12,7,60),(35,11,11,22),(36,10,6,5),(37,1,19,75),(38,3,62,57),(39,13,18,98),(40,5,73,64),(41,13,8,38),(42,9,23,13),(43,13,34,87),(44,4,94,77),(45,13,69,47),(46,4,89,68),(47,10,47,22),(48,10,88,27),(49,10,68,31),(50,7,59,41),(51,4,26,38),(52,2,43,82),(53,11,46,93),(54,4,59,11),(55,11,62,73),(56,10,65,96),(57,11,28,89),(58,8,41,19),(59,10,96,69),(60,8,69,80),(61,12,14,95),(62,5,88,36),(63,3,72,9),(64,4,21,14),(65,1,86,14),(66,2,11,23),(67,11,38,46),(68,3,43,65),(69,13,87,46),(70,9,7,26),(71,2,68,11),(72,7,18,38),(73,5,73,52),(74,5,39,78),(75,10,21,92),(76,13,100,16),(77,11,46,91),(78,3,20,43),(79,7,40,37),(80,9,9,53),(81,5,24,9),(82,10,37,67),(83,3,3,55),(84,9,46,45),(85,11,88,84),(86,8,40,22),(87,12,76,14),(88,6,74,41),(89,11,77,44),(90,12,16,11),(91,1,98,72),(92,9,9,48),(93,2,22,68),(94,10,71,28),(95,4,59,7),(96,8,73,89),(97,3,46,63),(98,10,95,42),(99,4,98,14),(100,10,31,31);
+/*!40000 ALTER TABLE `multi_genre_films_serials` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `news`
 --
 
@@ -320,13 +351,13 @@ CREATE TABLE `news` (
   `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `body` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `film_id` int unsigned DEFAULT NULL,
-  `serials_id` int unsigned DEFAULT NULL,
+  `serial_id` int unsigned DEFAULT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `news_films_id_fk` (`film_id`),
-  KEY `news_serials_id_fk` (`serials_id`),
+  KEY `news_serials_id_fk` (`serial_id`),
   CONSTRAINT `news_films_id_fk` FOREIGN KEY (`film_id`) REFERENCES `films` (`id`),
-  CONSTRAINT `news_serials_id_fk` FOREIGN KEY (`serials_id`) REFERENCES `serials` (`id`)
+  CONSTRAINT `news_serials_id_fk` FOREIGN KEY (`serial_id`) REFERENCES `serials` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -396,7 +427,7 @@ DROP TABLE IF EXISTS `profiles`;
 CREATE TABLE `profiles` (
   `user_id` int unsigned NOT NULL COMMENT 'Ссылка на пользователя',
   `photo_id` int DEFAULT NULL,
-  `sex` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Пол',
+  `sex` enum('M','F') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `birthday` date DEFAULT NULL COMMENT 'Дата рождения',
   `city_id` int unsigned DEFAULT NULL COMMENT 'Ссылка на город проживания',
   `country_id` int unsigned DEFAULT NULL COMMENT 'Ссылка на город проживания',
@@ -407,13 +438,13 @@ CREATE TABLE `profiles` (
   UNIQUE KEY `photo_id` (`photo_id`),
   KEY `profiles_city_id_fk` (`city_id`),
   KEY `profiles_country_id_fk` (`country_id`),
+  KEY `profiles_birthday_sex_idx` (`birthday`,`sex`),
   KEY `profiles_films_id_fk` (`films_watched`),
   KEY `profiles_serials_id_fk` (`serials_watched`),
-  KEY `profiles_birthday_sex_idx` (`birthday`,`sex`),
   CONSTRAINT `profiles_city_id_fk` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`) ON DELETE SET NULL,
   CONSTRAINT `profiles_country_id_fk` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `profiles_films_id_fk` FOREIGN KEY (`films_watched`) REFERENCES `films` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `profiles_serials_id_fk` FOREIGN KEY (`serials_watched`) REFERENCES `serials` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `profiles_films_id_fk` FOREIGN KEY (`films_watched`) REFERENCES `watched_films` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `profiles_serials_id_fk` FOREIGN KEY (`serials_watched`) REFERENCES `watched_serials` (`id`) ON DELETE SET NULL,
   CONSTRAINT `profiles_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Профили';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -438,16 +469,16 @@ DROP TABLE IF EXISTS `rated`;
 CREATE TABLE `rated` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `film_id` int unsigned DEFAULT NULL,
-  `serials_id` int unsigned DEFAULT NULL,
+  `serial_id` int unsigned DEFAULT NULL,
   `user_id` int unsigned DEFAULT NULL,
   `rating` int DEFAULT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `rated_user_id_fk` (`user_id`),
   KEY `rated_film_id_fk` (`film_id`),
-  KEY `rated_serials_id_fk` (`serials_id`),
+  KEY `rated_serials_id_fk` (`serial_id`),
   CONSTRAINT `rated_film_id_fk` FOREIGN KEY (`film_id`) REFERENCES `films` (`id`),
-  CONSTRAINT `rated_serials_id_fk` FOREIGN KEY (`serials_id`) REFERENCES `serials` (`id`),
+  CONSTRAINT `rated_serials_id_fk` FOREIGN KEY (`serial_id`) REFERENCES `serials` (`id`),
   CONSTRAINT `rated_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -519,15 +550,15 @@ CREATE TABLE `reviews` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int unsigned DEFAULT NULL,
   `film_id` int unsigned DEFAULT NULL,
-  `serials_id` int unsigned DEFAULT NULL,
+  `serial_id` int unsigned DEFAULT NULL,
   `body` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `reviews_user_id_fk` (`user_id`),
   KEY `reviews_films_id_fk` (`film_id`),
-  KEY `reviews_serials_id_fk` (`serials_id`),
+  KEY `reviews_serials_id_fk` (`serial_id`),
   CONSTRAINT `reviews_films_id_fk` FOREIGN KEY (`film_id`) REFERENCES `films` (`id`),
-  CONSTRAINT `reviews_serials_id_fk` FOREIGN KEY (`serials_id`) REFERENCES `serials` (`id`),
+  CONSTRAINT `reviews_serials_id_fk` FOREIGN KEY (`serial_id`) REFERENCES `serials` (`id`),
   CONSTRAINT `reviews_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -624,14 +655,13 @@ DROP TABLE IF EXISTS `serials`;
 CREATE TABLE `serials` (
   `id` int unsigned NOT NULL,
   `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `genre_id` int unsigned DEFAULT NULL,
+  `genres` int unsigned DEFAULT NULL,
   `years` smallint DEFAULT NULL,
-  `rating` int DEFAULT NULL,
   `season` tinyint DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `serials_years_film_idx` (`years`,`title`),
-  KEY `serials_genres_film_idx` (`genre_id`,`title`),
-  CONSTRAINT `serials_genre_id_fk` FOREIGN KEY (`genre_id`) REFERENCES `genres` (`id`)
+  KEY `serials_genres_film_idx` (`genres`,`title`),
+  CONSTRAINT `serials_genre_id_fk` FOREIGN KEY (`genres`) REFERENCES `multi_genre_films_serials` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -641,9 +671,22 @@ CREATE TABLE `serials` (
 
 LOCK TABLES `serials` WRITE;
 /*!40000 ALTER TABLE `serials` DISABLE KEYS */;
-INSERT INTO `serials` VALUES (1,'Debitis quia debitis qui.',7,1988,994,3),(2,'Voluptatem tempora totam sit et ullam accusantium ',6,2011,460,8),(3,'Ducimus itaque earum rerum veniam dolores quis exp',10,1972,319,3),(4,'Animi quam quisquam harum vitae corporis ut.',6,1970,215,2),(5,'Ipsum aut aperiam fugit tempore.',11,2011,115,4),(6,'Molestiae autem ut laudantium beatae non.',9,1991,932,0),(7,'Et nihil laborum enim tempora optio placeat et.',13,1979,315,4),(8,'Aut rerum quasi aut autem iste.',12,2010,776,7),(9,'Et aliquid inventore nesciunt ex.',8,2016,934,4),(10,'Eos doloribus accusamus autem rerum eius qui.',4,2015,344,1),(11,'Eligendi qui minus reprehenderit voluptatem perspi',6,2006,918,2),(12,'Saepe voluptatibus omnis officia et.',5,1974,555,3),(13,'Ut voluptatem quia nam ullam laudantium nobis omni',6,1974,22,2),(14,'Iste laudantium dolores id ducimus nostrum delenit',4,1990,444,2),(15,'Doloremque dolor velit similique facere sed aut.',1,1980,156,2),(16,'Voluptatem occaecati tempore temporibus.',7,2010,444,8),(17,'Corporis blanditiis non iusto et sunt praesentium ',2,1999,752,8),(18,'Odit et voluptas eligendi est.',5,2009,430,9),(19,'Ad ducimus ducimus optio.',2,2005,890,7),(20,'Est nihil quae delectus officia quia deserunt beat',9,2006,162,0),(21,'Magni est aspernatur culpa assumenda molestiae fac',11,2012,137,7),(22,'Vitae maiores odio perferendis id hic consequatur.',4,1983,201,1),(23,'Optio recusandae asperiores sit quis qui fuga expe',11,2019,595,8),(24,'In ipsam corporis eaque earum.',2,1978,368,8),(25,'Rerum alias qui recusandae esse blanditiis.',5,1992,56,7),(26,'Ipsa voluptatem illum voluptatem excepturi labore ',6,2000,175,5),(27,'Cupiditate optio blanditiis dolor voluptas quia.',2,2008,705,8),(28,'Esse neque reiciendis magnam odio reprehenderit.',4,1989,2,3),(29,'Voluptatem minus voluptatem asperiores accusantium',2,2002,895,6),(30,'Architecto aliquam officia nemo suscipit tempora s',10,1995,467,6),(31,'Necessitatibus dolores ullam laborum et aut sequi ',5,2003,650,9),(32,'Iste praesentium dolorem cupiditate autem vel sed ',7,1980,850,5),(33,'Accusantium quia sequi ipsam illum quod deserunt.',8,2015,297,5),(34,'Voluptas vero inventore quo qui.',6,2010,935,4),(35,'Reprehenderit dolorem rerum iusto porro consequatu',5,1982,785,2),(36,'Sed aspernatur maxime officiis voluptate eum.',6,1977,117,8),(37,'Quos id blanditiis voluptatem quo ut.',13,2019,230,4),(38,'Ab itaque ea sed expedita modi.',9,1996,800,0),(39,'Esse sit voluptas nihil doloribus praesentium sint',6,1997,310,5),(40,'Et odit id est veniam libero.',3,2012,148,1),(41,'Deserunt molestias ipsam natus natus.',10,2016,808,5),(42,'Modi ipsum delectus facilis vel nulla illo.',1,2007,598,4),(43,'Quo soluta velit rerum debitis quia consequatur ne',2,2018,563,0),(44,'Excepturi vel recusandae qui sit sit iusto sit tot',4,2017,21,2),(45,'Veritatis et at odit vero consequatur nesciunt.',12,2000,415,2),(46,'Facere eos et consequuntur repudiandae ut.',12,1999,12,4),(47,'Eligendi quis pariatur aut nulla et optio suscipit',10,1994,813,0),(48,'Earum quibusdam sunt eaque illo odio in vero.',12,2008,29,8),(49,'Quia ducimus voluptatum vero quis velit blanditiis',2,2009,708,8),(50,'Neque qui amet et non impedit.',2,2002,451,0),(51,'Omnis et excepturi similique quasi.',3,1973,130,5),(52,'Dolorem modi corrupti non non.',10,1976,298,2),(53,'A qui architecto nihil dicta debitis.',1,2006,101,2),(54,'Atque repellat veniam reiciendis officia repudiand',2,1999,608,6),(55,'Corrupti consequatur dicta et ullam delectus magni',5,2004,736,0),(56,'Nemo rerum impedit aut molestiae dolor quia optio.',4,1975,855,2),(57,'Rerum necessitatibus odio quia quas praesentium es',7,1980,66,7),(58,'Sunt adipisci rerum iusto ad quia.',6,1987,764,4),(59,'Blanditiis officia nemo quis nemo voluptate.',12,2019,621,8),(60,'Quia et id est ut et harum ad.',1,1971,815,4),(61,'Praesentium omnis veniam rerum suscipit non repreh',7,2016,211,9),(62,'Sunt nobis consequatur explicabo ut vel tenetur du',8,1989,610,4),(63,'Ea voluptatibus libero debitis alias et.',4,1994,417,4),(64,'Voluptatum debitis sapiente reprehenderit ut.',8,1988,253,5),(65,'Sint ut nihil quis aspernatur odio omnis.',1,1998,13,9),(66,'Libero harum vel nulla suscipit eum hic suscipit.',9,1994,305,8),(67,'Ipsum possimus eos nemo voluptate.',2,1977,486,6),(68,'Minima dicta ad doloribus quia.',6,2014,513,0),(69,'Sint molestiae nihil officiis qui.',11,2015,108,4),(70,'Nesciunt et numquam molestiae debitis.',12,2007,1,6),(71,'Perspiciatis consequatur sit laboriosam doloribus ',12,1980,681,6),(72,'Voluptatum possimus architecto voluptatem ut quisq',11,1979,399,2),(73,'Et omnis magni et pariatur.',5,1984,954,3),(74,'Delectus ipsam modi voluptatem voluptates veritati',4,1985,571,1),(75,'Velit iusto a quod debitis ipsam ea.',6,1992,994,4),(76,'Labore ipsam id illum et sunt.',4,1993,255,9),(77,'Debitis fugit minima omnis ducimus.',3,2011,292,5),(78,'Similique saepe unde non sequi magnam eos.',2,2013,696,6),(79,'Mollitia unde eos molestias veritatis debitis qui ',12,2014,603,1),(80,'Natus maxime et ea eveniet dolor.',2,1986,925,3),(81,'Non qui sint vel voluptatem doloremque dolore in.',1,1990,816,4),(82,'Et excepturi rerum quia aliquam harum deleniti.',10,1981,305,3),(83,'Porro recusandae quos unde aliquid mollitia conseq',8,1970,77,1),(84,'Non consequatur consectetur praesentium optio.',8,1975,469,1),(85,'Facere vel ut repellat adipisci nobis.',4,1979,113,2),(86,'Et earum vel alias harum repudiandae ut.',9,1999,157,9),(87,'Quis rerum et quis totam suscipit veniam rerum.',5,1973,445,2),(88,'Quo esse qui quam quis molestias.',10,1979,755,3),(89,'Inventore qui ea sunt voluptate at.',8,2014,439,7),(90,'Voluptatem officia iure consequatur in veniam sunt',10,2007,930,5),(91,'Est deleniti voluptatum porro minima ipsam consequ',1,2012,333,4),(92,'Ipsam possimus adipisci autem ex omnis.',12,2017,876,9),(93,'Deleniti exercitationem quia aut voluptas quasi ut',5,1991,378,5),(94,'Amet fugit at quis dolores cum.',13,2005,260,4),(95,'Sapiente fugit eius consectetur quis sequi velit d',13,2001,168,3),(96,'Velit ut facilis aspernatur soluta odit laboriosam',13,1983,57,0),(97,'Et iusto repudiandae cum qui.',10,1996,781,9),(98,'Incidunt nihil veritatis perspiciatis ullam sequi ',13,2003,734,5),(99,'Reprehenderit repellendus odit dolores ab nihil.',6,1987,325,9),(100,'Itaque non officia quaerat voluptatum fugiat repel',4,1975,425,4);
+INSERT INTO `serials` VALUES (1,'Debitis quia debitis qui.',42,1988,3),(2,'Voluptatem tempora totam sit et ullam accusantium ',37,2011,8),(3,'Ducimus itaque earum rerum veniam dolores quis exp',56,1972,3),(4,'Animi quam quisquam harum vitae corporis ut.',69,1970,2),(5,'Ipsum aut aperiam fugit tempore.',78,2011,4),(6,'Molestiae autem ut laudantium beatae non.',80,1991,0),(7,'Et nihil laborum enim tempora optio placeat et.',68,1979,4),(8,'Aut rerum quasi aut autem iste.',99,2010,7),(9,'Et aliquid inventore nesciunt ex.',89,2016,4),(10,'Eos doloribus accusamus autem rerum eius qui.',49,2015,1),(11,'Eligendi qui minus reprehenderit voluptatem perspi',79,2006,2),(12,'Saepe voluptatibus omnis officia et.',45,1974,3),(13,'Ut voluptatem quia nam ullam laudantium nobis omni',87,1974,2),(14,'Iste laudantium dolores id ducimus nostrum delenit',2,1990,2),(15,'Doloremque dolor velit similique facere sed aut.',49,1980,2),(16,'Voluptatem occaecati tempore temporibus.',36,2010,8),(17,'Corporis blanditiis non iusto et sunt praesentium ',34,1999,8),(18,'Odit et voluptas eligendi est.',63,2009,9),(19,'Ad ducimus ducimus optio.',12,2005,7),(20,'Est nihil quae delectus officia quia deserunt beat',71,2006,0),(21,'Magni est aspernatur culpa assumenda molestiae fac',19,2012,7),(22,'Vitae maiores odio perferendis id hic consequatur.',82,1983,1),(23,'Optio recusandae asperiores sit quis qui fuga expe',54,2019,8),(24,'In ipsam corporis eaque earum.',20,1978,8),(25,'Rerum alias qui recusandae esse blanditiis.',39,1992,7),(26,'Ipsa voluptatem illum voluptatem excepturi labore ',35,2000,5),(27,'Cupiditate optio blanditiis dolor voluptas quia.',55,2008,8),(28,'Esse neque reiciendis magnam odio reprehenderit.',72,1989,3),(29,'Voluptatem minus voluptatem asperiores accusantium',95,2002,6),(30,'Architecto aliquam officia nemo suscipit tempora s',60,1995,6),(31,'Necessitatibus dolores ullam laborum et aut sequi ',11,2003,9),(32,'Iste praesentium dolorem cupiditate autem vel sed ',76,1980,5),(33,'Accusantium quia sequi ipsam illum quod deserunt.',45,2015,5),(34,'Voluptas vero inventore quo qui.',98,2010,4),(35,'Reprehenderit dolorem rerum iusto porro consequatu',54,1982,2),(36,'Sed aspernatur maxime officiis voluptate eum.',76,1977,8),(37,'Quos id blanditiis voluptatem quo ut.',18,2019,4),(38,'Ab itaque ea sed expedita modi.',62,1996,0),(39,'Esse sit voluptas nihil doloribus praesentium sint',55,1997,5),(40,'Et odit id est veniam libero.',87,2012,1),(41,'Deserunt molestias ipsam natus natus.',71,2016,5),(42,'Modi ipsum delectus facilis vel nulla illo.',91,2007,4),(43,'Quo soluta velit rerum debitis quia consequatur ne',45,2018,0),(44,'Excepturi vel recusandae qui sit sit iusto sit tot',49,2017,2),(45,'Veritatis et at odit vero consequatur nesciunt.',9,2000,2),(46,'Facere eos et consequuntur repudiandae ut.',99,1999,4),(47,'Eligendi quis pariatur aut nulla et optio suscipit',67,1994,0),(48,'Earum quibusdam sunt eaque illo odio in vero.',39,2008,8),(49,'Quia ducimus voluptatum vero quis velit blanditiis',92,2009,8),(50,'Neque qui amet et non impedit.',43,2002,0),(51,'Omnis et excepturi similique quasi.',40,1973,5),(52,'Dolorem modi corrupti non non.',70,1976,2),(53,'A qui architecto nihil dicta debitis.',28,2006,2),(54,'Atque repellat veniam reiciendis officia repudiand',32,1999,6),(55,'Corrupti consequatur dicta et ullam delectus magni',74,2004,0),(56,'Nemo rerum impedit aut molestiae dolor quia optio.',73,1975,2),(57,'Rerum necessitatibus odio quia quas praesentium es',43,1980,7),(58,'Sunt adipisci rerum iusto ad quia.',95,1987,4),(59,'Blanditiis officia nemo quis nemo voluptate.',47,2019,8),(60,'Quia et id est ut et harum ad.',49,1971,4),(61,'Praesentium omnis veniam rerum suscipit non repreh',5,2016,9),(62,'Sunt nobis consequatur explicabo ut vel tenetur du',75,1989,4),(63,'Ea voluptatibus libero debitis alias et.',62,1994,4),(64,'Voluptatum debitis sapiente reprehenderit ut.',84,1988,5),(65,'Sint ut nihil quis aspernatur odio omnis.',34,1998,9),(66,'Libero harum vel nulla suscipit eum hic suscipit.',17,1994,8),(67,'Ipsum possimus eos nemo voluptate.',81,1977,6),(68,'Minima dicta ad doloribus quia.',57,2014,0),(69,'Sint molestiae nihil officiis qui.',38,2015,4),(70,'Nesciunt et numquam molestiae debitis.',19,2007,6),(71,'Perspiciatis consequatur sit laboriosam doloribus ',81,1980,6),(72,'Voluptatum possimus architecto voluptatem ut quisq',46,1979,2),(73,'Et omnis magni et pariatur.',89,1984,3),(74,'Delectus ipsam modi voluptatem voluptates veritati',4,1985,1),(75,'Velit iusto a quod debitis ipsam ea.',54,1992,4),(76,'Labore ipsam id illum et sunt.',58,1993,9),(77,'Debitis fugit minima omnis ducimus.',29,2011,5),(78,'Similique saepe unde non sequi magnam eos.',67,2013,6),(79,'Mollitia unde eos molestias veritatis debitis qui ',51,2014,1),(80,'Natus maxime et ea eveniet dolor.',51,1986,3),(81,'Non qui sint vel voluptatem doloremque dolore in.',3,1990,4),(82,'Et excepturi rerum quia aliquam harum deleniti.',61,1981,3),(83,'Porro recusandae quos unde aliquid mollitia conseq',96,1970,1),(84,'Non consequatur consectetur praesentium optio.',98,1975,1),(85,'Facere vel ut repellat adipisci nobis.',1,1979,2),(86,'Et earum vel alias harum repudiandae ut.',11,1999,9),(87,'Quis rerum et quis totam suscipit veniam rerum.',49,1973,2),(88,'Quo esse qui quam quis molestias.',13,1979,3),(89,'Inventore qui ea sunt voluptate at.',16,2014,7),(90,'Voluptatem officia iure consequatur in veniam sunt',41,2007,5),(91,'Est deleniti voluptatum porro minima ipsam consequ',55,2012,4),(92,'Ipsam possimus adipisci autem ex omnis.',52,2017,9),(93,'Deleniti exercitationem quia aut voluptas quasi ut',93,1991,5),(94,'Amet fugit at quis dolores cum.',11,2005,4),(95,'Sapiente fugit eius consectetur quis sequi velit d',76,2001,3),(96,'Velit ut facilis aspernatur soluta odit laboriosam',44,1983,0),(97,'Et iusto repudiandae cum qui.',94,1996,9),(98,'Incidunt nihil veritatis perspiciatis ullam sequi ',38,2003,5),(99,'Reprehenderit repellendus odit dolores ab nihil.',5,1987,9),(100,'Itaque non officia quaerat voluptatum fugiat repel',11,1975,4);
 /*!40000 ALTER TABLE `serials` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Temporary view structure for view `top_100_movies`
+--
+
+DROP TABLE IF EXISTS `top_100_movies`;
+/*!50001 DROP VIEW IF EXISTS `top_100_movies`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `top_100_movies` AS SELECT 
+ 1 AS `title`,
+ 1 AS `rating`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `users`
@@ -679,6 +722,64 @@ INSERT INTO `users` VALUES (1,'Daphnee','Corwin','gloria.bernier@example.com','2
 UNLOCK TABLES;
 
 --
+-- Table structure for table `watched_films`
+--
+
+DROP TABLE IF EXISTS `watched_films`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `watched_films` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL COMMENT 'Ссылка на пользователя',
+  `film_id` int unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `watched_films_user_id_fk` (`user_id`),
+  KEY `watched_films_f_fk` (`film_id`),
+  CONSTRAINT `watched_films_f_fk` FOREIGN KEY (`film_id`) REFERENCES `films` (`id`),
+  CONSTRAINT `watched_films_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `watched_films`
+--
+
+LOCK TABLES `watched_films` WRITE;
+/*!40000 ALTER TABLE `watched_films` DISABLE KEYS */;
+INSERT INTO `watched_films` VALUES (1,90,85),(2,56,24),(3,50,78),(4,40,66),(5,10,53),(6,33,5),(7,26,15),(8,95,28),(9,58,3),(10,43,3),(11,89,32),(12,92,64),(13,46,35),(14,35,72),(15,52,44),(16,66,96),(17,81,18),(18,44,66),(19,97,88),(20,48,78),(21,42,76),(22,55,46),(23,62,75),(24,86,6),(25,71,37),(26,72,48),(27,23,72),(28,89,27),(29,69,62),(30,2,25),(31,17,12),(32,8,2),(33,86,23),(34,57,15),(35,2,65),(36,19,100),(37,44,18),(38,60,42),(39,32,31),(40,61,11),(41,71,20),(42,87,76),(43,19,66),(44,71,56),(45,67,68),(46,36,76),(47,72,32),(48,42,14),(49,45,82),(50,75,29),(51,20,11),(52,96,44),(53,33,31),(54,58,95),(55,99,12),(56,60,66),(57,50,49),(58,97,35),(59,86,24),(60,63,40),(61,10,29),(62,14,84),(63,75,26),(64,3,36),(65,70,41),(66,93,44),(67,41,70),(68,26,21),(69,25,64),(70,42,17),(71,60,48),(72,60,56),(73,98,20),(74,7,76),(75,59,67),(76,58,88),(77,63,52),(78,72,4),(79,2,97),(80,79,6),(81,89,29),(82,76,92),(83,30,75),(84,86,2),(85,51,50),(86,97,34),(87,78,88),(88,7,71),(89,34,56),(90,79,24),(91,85,50),(92,94,20),(93,18,31),(94,100,8),(95,37,61),(96,94,86),(97,46,73),(98,24,3),(99,44,8),(100,9,22);
+/*!40000 ALTER TABLE `watched_films` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `watched_serials`
+--
+
+DROP TABLE IF EXISTS `watched_serials`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `watched_serials` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL COMMENT 'Ссылка на пользователя',
+  `serial_id` int unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `watched_serials_user_id_fk` (`user_id`),
+  KEY `watched_serials_s_fk` (`serial_id`),
+  CONSTRAINT `watched_serials_s_fk` FOREIGN KEY (`serial_id`) REFERENCES `serials` (`id`),
+  CONSTRAINT `watched_serials_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `watched_serials`
+--
+
+LOCK TABLES `watched_serials` WRITE;
+/*!40000 ALTER TABLE `watched_serials` DISABLE KEYS */;
+INSERT INTO `watched_serials` VALUES (1,1,1),(2,2,2),(3,3,3),(4,4,4),(5,5,5),(6,6,6),(7,7,7),(8,8,8),(9,9,9),(10,10,10),(11,11,11),(12,12,12),(13,13,13),(14,14,14),(15,15,15),(16,16,16),(17,17,17),(18,18,18),(19,19,19),(20,20,20),(21,21,21),(22,22,22),(23,23,23),(24,24,24),(25,25,25),(26,26,26),(27,27,27),(28,28,28),(29,29,29),(30,30,30),(31,31,31),(32,32,32),(33,33,33),(34,34,34),(35,35,35),(36,36,36),(37,37,37),(38,38,38),(39,39,39),(40,40,40),(41,41,41),(42,42,42),(43,43,43),(44,44,44),(45,45,45),(46,46,46),(47,47,47),(48,48,48),(49,49,49),(50,50,50),(51,51,51),(52,52,52),(53,53,53),(54,54,54),(55,55,55),(56,56,56),(57,57,57),(58,58,58),(59,59,59),(60,60,60),(61,61,61),(62,62,62),(63,63,63),(64,64,64),(65,65,65),(66,66,66),(67,67,67),(68,68,68),(69,69,69),(70,70,70),(71,71,71),(72,72,72),(73,73,73),(74,74,74),(75,75,75),(76,76,76),(77,77,77),(78,78,78),(79,79,79),(80,80,80),(81,81,81),(82,82,82),(83,83,83),(84,84,84),(85,85,85),(86,86,86),(87,87,87),(88,88,88),(89,89,89),(90,90,90),(91,91,91),(92,92,92),(93,93,93),(94,94,94),(95,95,95),(96,96,96),(97,97,97),(98,98,98),(99,99,99),(100,100,100);
+/*!40000 ALTER TABLE `watched_serials` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `works_of_celebs`
 --
 
@@ -687,17 +788,17 @@ DROP TABLE IF EXISTS `works_of_celebs`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `works_of_celebs` (
   `film_id` int unsigned NOT NULL,
-  `serials_id` int unsigned NOT NULL,
+  `serial_id` int unsigned NOT NULL,
   `celeb_id` int unsigned NOT NULL,
   `role_id` int unsigned NOT NULL,
-  PRIMARY KEY (`film_id`,`serials_id`,`celeb_id`,`role_id`),
-  KEY `works_of_celebs_serials_id_fk` (`serials_id`),
+  PRIMARY KEY (`film_id`,`serial_id`,`celeb_id`,`role_id`),
+  KEY `works_of_celebs_serials_id_fk` (`serial_id`),
   KEY `works_of_celebs_celeb_id_fk` (`celeb_id`),
   KEY `works_of_celebs_role_id_fk` (`role_id`),
   CONSTRAINT `works_of_celebs_celeb_id_fk` FOREIGN KEY (`celeb_id`) REFERENCES `celebs` (`id`),
   CONSTRAINT `works_of_celebs_films_id_fk` FOREIGN KEY (`film_id`) REFERENCES `films` (`id`),
   CONSTRAINT `works_of_celebs_role_id_fk` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`),
-  CONSTRAINT `works_of_celebs_serials_id_fk` FOREIGN KEY (`serials_id`) REFERENCES `serials` (`id`)
+  CONSTRAINT `works_of_celebs_serials_id_fk` FOREIGN KEY (`serial_id`) REFERENCES `serials` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -714,6 +815,45 @@ UNLOCK TABLES;
 --
 -- Dumping routines for database 'kinopoisk'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `insert_any_number_of_users` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_any_number_of_users`(in num int)
+BEGIN
+DECLARE i INT UNSIGNED DEFAULT 1; WHILE i <= num DO
+INSERT INTO multi_genre_films_serials (genre_id, film_id, serial_id) VALUES (i, i, i);
+SET i = i + 1; END WHILE;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Final view structure for view `top_100_movies`
+--
+
+/*!50001 DROP VIEW IF EXISTS `top_100_movies`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `top_100_movies` AS select `f`.`title` AS `title`,`r`.`rating` AS `rating` from (`rated` `r` join `films` `f` on((`f`.`id` = `r`.`film_id`))) order by `r`.`rating` desc limit 100 */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -724,4 +864,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-26 15:02:21
+-- Dump completed on 2021-05-31 21:47:23
